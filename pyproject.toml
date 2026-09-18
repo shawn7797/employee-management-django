@@ -7,7 +7,11 @@ authors = [
     { name = "Shawn Mathias", email = "shawn7797@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "django>=6.1.1",
+    "django-cors-headers>=4.9.0",
+    "djangorestframework>=3.18.1",
+]
 
 [project.scripts]
 employee-management-django = "employee_management_django:main"
