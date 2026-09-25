@@ -1,6 +1,11 @@
 from pathlib import Path
+import os
+import dj_database_url
+from pathlib import Path
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-local-development-only'
 DEBUG = True
 ALLOWED_HOSTS = ['*']
@@ -49,11 +54,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+database_url = (
+    os.environ.get('POSTGRES_URL_NON_POOLING') or
+    os.environ.get('DATABASE_URL') or
+    os.environ.get('POSTGRES_URL')
+)
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(
+        database_url,
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 # FIX: Added required authentications context processors configurations 
